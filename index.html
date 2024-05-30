@@ -7,7 +7,7 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
         body { font-family: Arial, sans-serif; }
-        .node { stroke: #fff; stroke-width: 1.5px; }
+        .node { stroke: #fff; stroke-width: 1.5px; cursor: pointer; }
         .link { stroke: #999; stroke-opacity: 0.6; }
     </style>
 </head>
@@ -61,7 +61,7 @@
             .attr("class", "node")
             .attr("r", 10)
             .on("click", (event, d) => {
-                window.open(d.url, "_blank");
+                window.location.href = d.url;  // Zmiana URL w przeglądarce na URL węzła
             })
             .call(d3.drag()
                 .on("start", dragstarted)
