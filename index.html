@@ -10,7 +10,8 @@
         .node { stroke: #fff; stroke-width: 1.5px; cursor: pointer; }
         .link { stroke: #999; stroke-opacity: 0.6; }
         .navbar { margin-bottom: 20px; }
-        .navbar a { margin-right: 10px; text-decoration: solid; color: orange; }
+        .navbar a { margin-right: 10px; text-decoration: none; color: blue; }
+        audio { display: none; } /* Ukrycie odtwarzacza audio */
     </style>
 </head>
 <body>
@@ -22,6 +23,11 @@
         <a href="contact.html">Contact</a>
     </div>
     <div id="graph"></div>
+    <!-- Dodanie odtwarzacza audio -->
+    <audio id="audioPlayer" controls>
+        <source id="audioSource" src="" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
     <script>
         // Ustawienia wstępne
         const width = 960;
@@ -34,9 +40,9 @@
 
         // Przykładowe dane
         const nodes = [
-            { id: 1, name: "Sound 1", url: "sound1.html" },
-            { id: 2, name: "Sound 2", url: "sound2.html" },
-            { id: 3, name: "Sound 3", url: "sound3.html" },
+            { id: 1, name: "Sound 1", url: "sounds/sound1.mp3" },
+            { id: 2, name: "Sound 2", url: "sounds/sound2.mp3" },
+            { id: 3, name: "Sound 3", url: "sounds/sound3.mp3" },
             // Dodaj więcej węzłów
         ];
 
@@ -70,7 +76,11 @@
             .attr("r", 10)
             .on("click", function(event, d) {
                 console.log("Clicked on node:", d.name);  // Debugowanie kliknięcia
-                window.location.href = d.url;  // Zmiana URL w przeglądarce na URL węzła
+                const audioPlayer = document.getElementById('audioPlayer');
+                const audioSource = document.getElementById('audioSource');
+                audioSource.src = d.url;
+                audioPlayer.load();
+                audioPlayer.play();  // Odtwarzanie pliku audio
             })
             .call(d3.drag()
                 .on("start", dragstarted)
