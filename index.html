@@ -60,8 +60,8 @@
             .enter().append("circle")
             .attr("class", "node")
             .attr("r", 10)
-            .on("click", (event, d) => {
-                console.log(`Clicked node: ${d.name}, URL: ${d.url}`); // Debugowanie konsolowe
+            .on("click", function(event, d) {
+                console.log("Clicked on node:", d.name);  // Debugowanie kliknięcia
                 window.location.href = d.url;  // Zmiana URL w przeglądarce na URL węzła
             })
             .call(d3.drag()
