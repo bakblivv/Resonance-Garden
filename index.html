@@ -15,18 +15,20 @@
     <h1>Desert Sound Archive</h1>
     <div id="graph"></div>
     <script>
-        // Tutaj wstaw kod D3.js
+        // Ustawienia wstępne
         const width = 960;
         const height = 600;
 
+        // Dodanie SVG do div
         const svg = d3.select("#graph").append("svg")
             .attr("width", width)
             .attr("height", height);
 
+        // Przykładowe dane
         const nodes = [
-            { id: 1, name: "Sound 1" },
-            { id: 2, name: "Sound 2" },
-            { id: 3, name: "Sound 3" },
+            { id: 1, name: "Sound 1", url: "sound1.html" },
+            { id: 2, name: "Sound 2", url: "sound2.html" },
+            { id: 3, name: "Sound 3", url: "sound3.html" },
             // Dodaj więcej węzłów
         ];
 
@@ -36,11 +38,13 @@
             // Dodaj więcej połączeń
         ];
 
+        // Ustawienia siły symulacji
         const simulation = d3.forceSimulation(nodes)
             .force("link", d3.forceLink(links).id(d => d.id))
             .force("charge", d3.forceManyBody().strength(-200))
             .force("center", d3.forceCenter(width / 2, height / 2));
 
+        // Dodanie linii połączeń
         const link = svg.append("g")
             .attr("class", "links")
             .selectAll("line")
@@ -48,6 +52,7 @@
             .enter().append("line")
             .attr("class", "link");
 
+        // Dodanie węzłów jako kółek
         const node = svg.append("g")
             .attr("class", "nodes")
             .selectAll("circle")
@@ -55,14 +60,19 @@
             .enter().append("circle")
             .attr("class", "node")
             .attr("r", 10)
+            .on("click", (event, d) => {
+                window.open(d.url, "_blank");
+            })
             .call(d3.drag()
                 .on("start", dragstarted)
                 .on("drag", dragged)
                 .on("end", dragended));
 
+        // Dodanie tytułu do węzłów
         node.append("title")
             .text(d => d.name);
 
+        // Aktualizacja pozycji węzłów i połączeń przy każdym kroku symulacji
         simulation.on("tick", () => {
             link
                 .attr("x1", d => d.source.x)
@@ -75,6 +85,7 @@
                 .attr("cy", d => d.y);
         });
 
+        // Funkcje przeciągania
         function dragstarted(event, d) {
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
